@@ -541,12 +541,7 @@
             line-height: 1.5;
         }
 
-        .letter-content .heart {
-            color: #8B4513;
-            font-size: 36px;
-            margin-top: 15px;
-            text-align: center;
-        }
+       
 
         .letter-overlay {
             position: absolute;
@@ -686,6 +681,87 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile-specific styles for letter paper */
+        @media (max-width: 768px) {
+            .wooden-frame.full-screen .letter-paper {
+                width: 95%;
+                height: 95%;
+                max-height: none;
+                padding: 15px;
+                background-size: cover;
+                background-attachment: fixed;
+                margin: 0 auto;
+                border-radius: 8px;
+            }
+            
+            .wooden-frame.full-screen .letter-content {
+                padding: 15px 10px;
+                max-width: 100%;
+            }
+            
+            .letter-content .poem-stanza {
+                margin-bottom: 16px;
+            }
+        }
+
+        /* Small mobile phones in portrait mode */
+        @media (max-width: 480px) {
+            .wooden-frame.full-screen .letter-paper {
+                width: 98%;
+                height: 98%;
+                padding: 10px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            }
+            
+            .wooden-frame.full-screen .letter-content {
+                padding: 10px 8px;
+                font-size: 18px;
+                line-height: 1.4;
+            }
+            
+            .letter-content .poem-stanza {
+                margin-bottom: 12px;
+            }
+            
+            .letter-content .poem-title {
+                font-size: 110%;
+                margin-bottom: 15px;
+            }
+        }
+
+        /* For very small screens */
+        @media (max-width: 320px) {
+            .wooden-frame.full-screen .letter-paper {
+                width: 100%;
+                height: 100%;
+                padding: 8px;
+                border-radius: 0;
+            }
+            
+            .wooden-frame.full-screen .letter-content {
+                padding: 8px 5px;
+                font-size: 16px;
+                line-height: 1.3;
+            }
+        }
+
+        /* Handle different device orientations */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .wooden-frame.full-screen .letter-paper {
+                height: 98%;
+                max-height: none;
+                overflow-y: auto;
+            }
+            
+            .wooden-frame.full-screen .letter-content {
+                padding: 10px;
+            }
+            
+            .letter-content .poem-stanza {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
