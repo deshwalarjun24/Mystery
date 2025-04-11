@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature's Secret</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Times New Roman', serif;
+            background-color: #3c2a1c;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(139, 69, 19, 0.05)" stroke-width="0.5"/></svg>');
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            background-color: #3c2a1c;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 400;
+            transition: opacity 1s ease, visibility 1s;
+        }
+
+        .welcome-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .riddle-box {
+            background-color: #f8f3e6;
+            padding: 40px;
+            border-radius: 10px;
+            width: 450px;
+            max-width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            border: 2px solid #8b4513;
+        }
+
+        .riddle-heading {
+            color: #8b4513;
+            font-size: 24px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .riddle-text {
+            color: #3c2a1c;
+            font-family: 'Times New Roman', serif;
+            font-size: 20px;
+            margin: 20px 0;
+            line-height: 1.8;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .riddle-input {
+            width: 100%;
+            padding: 12px;
+            margin: 25px 0 15px 0;
+            border: 1px solid #c19a6b;
+            border-radius: 5px;
+            background-color: #f5f0e6;
+            font-family: 'Times New Roman', serif;
+            font-size: 16px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .riddle-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #8b4513;
+            color: #f5f0e6;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Times New Roman', serif;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .riddle-submit:hover {
+            background-color: #654321;
+        }
+
+        .riddle-error {
+            color: #8b0000;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 15px;
+            font-style: italic;
+            display: none;
+        }
+
+        .wooden-frame {
+            width: 400px;
+            height: 600px;
+            border: 20px solid #8B4513;
+            border-image: linear-gradient(45deg, #5D3A1F, #8B4513, #A0522D, #8B4513, #5D3A1F) 1;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f8f3e6;
+            padding: 20px;
+            position: relative;
+            transition: all 0.8s ease;
+        }
+
+        .wooden-frame.full-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            padding: 0;
+            z-index: 200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .envelope-container {
+            width: 350px;
+            height: 250px;
+            margin: 10px 0 30px 0;
+            perspective: 1000px;
+            position: relative;
+            border: 2px solid #d9d0bf;
+            background-color: #fbf9f4;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .wooden-frame.full-screen .envelope-container {
+            opacity: 0;
+            transform: scale(0.5);
+            position: absolute;
+            top: -999px;
+            visibility: hidden;
+        }
+
+        .envelope {
+            width: 300px;
+            height: 200px;
+            background-image: url('Evelope.PNG');
+            background-size: cover;
+            background-position: center;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 1s;
+            transform-style: preserve-3d;
+            transform-origin: center;
+            position: relative;
+        }
+
+        .envelope-back {
+            position: absolute;
+            width: 300px;
+            height: 200px;
+            border-radius: 5px;
+            z-index: 9;
+            background-image: url('Evelope.PNG');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid #a67c52;
+        }
+
+        .string {
+            width: 90%;
+            height: 2px;
+            background-color: #c19a6b;
+            position: absolute;
+            top: 300px;
+            left: 5%;
+            box-shadow: 0 0 2px rgba(0,0,0,0.2);
+            transition: opacity 0.5s ease;
+        }
+
+        .wooden-frame.full-screen .string {
+            opacity: 0;
+            position: absolute;
+            top: -999px;
+            visibility: hidden;
+        }
+
+        .string::before, .string::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #c19a6b;
+            border-radius: 50%;
+            top: -4px;
+        }
+
+        .string::before {
+            left: -5px;
+        }
+
+        .string::after {
+            right: -5px;
+        }
+
+        .letter-paper {
+            width: 350px;
+            height: 250px;
+            background-image: url('Page.jpg');
+            background-size: cover;
+            background-position: center;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s ease;
+        }
+
+        .wooden-frame.full-screen .letter-paper {
+            width: 90%;
+            max-width: 800px;
+            height: 90%;
+            max-height: 900px;
+            margin: 0 auto;
+            overflow-y: auto;
+        }
+
+        .letter-paper.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .letter-content {
+            height: 100%;
+            padding: 10px;
+            position: relative;
+            color: #500000;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 18px;
+            line-height: 1.4;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .wooden-frame.full-screen .letter-content {
+            font-size: 22px;
+            line-height: 1.6;
+            padding: 30px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .letter-content p {
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .letter-content .poem-title {
+            font-size: 125%;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .letter-content .poem-body {
+            text-align: left;
+            margin: 0 auto;
+            max-width: 600px;
+            line-height: 1.8;
+        }
+        
+        .letter-content .poem-stanza {
+            margin-bottom: 24px;
+        }
+        
+        .letter-content .poem-signature {
+            text-align: right;
+            font-style: italic;
+            margin-top: 30px;
+        }
+        
+        .letter-content .signature-name {
+            margin-top: 10px;
+            font-size: 90%;
+            line-height: 1.5;
+        }
+
+        .letter-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(139, 69, 19, 0.1) 0%, transparent 20%);
+            pointer-events: none;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            width: 100%;
+            height: 50px;
+            top: 0;
+            left: 0;
+            transform-origin: top;
+            z-index: 5;
+            transition: transform 0.8s;
+        }
+
+        .read-letter-btn {
+            background-color: #8b4513;
+            color: #f5f0e6;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-family: 'Times New Roman', serif;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            position: absolute;
+            bottom: 30px;
+            z-index: 10;
+        }
+
+        .wooden-frame.full-screen .read-letter-btn {
+            position: fixed;
+            bottom: 30px;
+            z-index: 250;
+        }
+
+        .read-letter-btn:hover {
+            background-color: #a0522d;
+            transform: translateY(-2px);
+        }
+
+        .password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 300;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .password-container {
+            background-color: #f8f3e6;
+            padding: 40px;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            border: 2px solid #8b4513;
+            text-align: center;
+        }
+
+        .password-heading {
+            color: #8b4513;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            margin: 25px 0 15px 0;
+            border: 1px solid #c19a6b;
+            border-radius: 5px;
+            background-color: #f5f0e6;
+            font-family: 'Times New Roman', serif;
+            font-size: 16px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .password-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #8b4513;
+            color: #f5f0e6;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Times New Roman', serif;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .password-submit:hover {
+            background-color: #654321;
+        }
+
+        .password-error {
+            color: #8b0000;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 15px;
+            font-style: italic;
+            display: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: #8b4513;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen with Riddle -->
+    <div class="welcome-screen">
+        <div class="riddle-box">
+            <h2 class="riddle-heading">Answer Nature's Riddle to Unseal</h2>
+            <div class="riddle-text" id="welcome-riddle-question"></div>
+            <input type="text" class="riddle-input" id="welcome-riddle-input" placeholder="Enter your answer" autocomplete="off">
+            <button class="riddle-submit" id="welcome-riddle-submit">Unlock</button>
+            <p class="riddle-error" id="welcome-riddle-error">That is not the correct answer. Try again.</p>
+        </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div class="password-modal">
+        <div class="password-container">
+            <button class="close-modal">&times;</button>
+            <h2 class="password-heading">Enter Secret Password</h2>
+            <input type="password" class="password-input" id="letter-password" placeholder="Enter the secret password" autocomplete="off">
+            <button class="password-submit" id="password-submit">Open Letter</button>
+            <p class="password-error" id="password-error">Incorrect password. Please try again.</p>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden initially) -->
+    <div class="main-container">
+        <div class="wooden-frame">
+            <div class="envelope-container">
+                <div class="envelope">
+                    <div class="envelope-flap"></div>
+                </div>
+            </div>
+            
+            <div class="string"></div>
+            
+            <div class="letter-paper">
+                <div class="letter-content">
+                    <div class="poem-title">To My Ever-Green Queen,</div>
+                    
+                    <div class="poem-body">
+                        <div class="poem-stanza">
+                            Some people come and go like seasons —<br>
+                            but you...<br>
+                            you feel like the shade of an old tree on a harsh summer day.<br>
+                            Still, calm, comforting.<br>
+                            Not loud — just there —<br>
+                            like the wind that doesn't need to be seen to be felt.
+                        </div>
+                        
+                        <div class="poem-stanza">
+                            You're like the first rain after a long drought.<br>
+                            You don't just fall — you soak in.<br>
+                            You don't make noise — you make sense.<br>
+                            You remind me how peace isn't found —<br>
+                            it's felt in the presence of the right one.
+                        </div>
+                        
+                        <div class="poem-stanza">
+                            I've seen flowers bloom and wither,<br>
+                            but some roots — like yours — run deep.<br>
+                            Unshaken.<br>
+                            You don't need to try to be beautiful.<br>
+                            You're like a mountain —<br>
+                            rough maybe, but full of grace.<br>
+                            Not everyone can climb,<br>
+                            but the one who does, sees the world from a whole new height.
+                        </div>
+                        
+                        <div class="poem-stanza">
+                            With you, I don't feel like a better man —<br>
+                            I feel like a real man.<br>
+                            Grounded like earth,<br>
+                            steady like the moon,<br>
+                            free like a cloud,<br>
+                            and still pulled toward you like the ocean to the moon.
+                        </div>
+                        
+                        <div class="poem-stanza">
+                            You're my MAHARANI — not of kingdoms,<br>
+                            but of my calm.<br>
+                            Of my silence.<br>
+                            Of every part of me I didn't even know needed light.
+                        </div>
+                        
+                        <div class="poem-stanza">
+                            No matter how many seasons come and go,<br>
+                            you will always be my evergreen.
+                        </div>
+                        
+                        <div class="poem-signature">
+                            — Yours,<br>
+                            <span class="signature-name">
+                                In every sunset, breeze, and silent pause,<br>
+                                The One Who Sees You Like Nature Itself
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="letter-overlay"></div>
+            </div>
+            
+            <button class="read-letter-btn">Read the letter</button>
+        </div>
+    </div>
+
+    <script>
+        // Riddles array with questions and answers
+        const riddles = [
+            {
+                question: "I rise without a sound,<br>Touch every leaf, every face,<br>I leave no footprints, no trace.<br>Yet when I'm gone, even the flowers bow their heads.",
+                answer: "wind"
+            },
+            {
+                question: "I fall from the sky,<br>But I never break.<br>I dance on windows, kiss the earth,<br>And leave behind a fresh scent of peace.",
+                answer: "rain"
+            },
+            {
+                question: "I light up the world but burn no one,<br>I disappear every night,<br>Yet always return to rise again.",
+                answer: "sun"
+            },
+            {
+                question: "I am not alive, yet I grow,<br>I have no lungs, yet I breathe,<br>I have no mouth, yet I roar.",
+                answer: "fire"
+            },
+            {
+                question: "I hold the stars, cradle the moon,<br>Wear the clouds like a shawl.<br>I am deep, endless, and quiet.",
+                answer: "sky"
+            },
+            {
+                question: "I stand tall and rooted,<br>But my arms sway with the wind.<br>I never speak, yet I tell stories of seasons.",
+                answer: "tree"
+            },
+            {
+                question: "You can see through me,<br>But I carry the world.<br>Still, calm, or roaring — I never stop moving.",
+                answer: "water"
+            },
+            {
+                question: "I arrive with thunder,<br>But I am not the sound.<br>I blind before I speak.",
+                answer: "lightning"
+            },
+            {
+                question: "I stretch far beyond sight,<br>Kiss the horizon every evening,<br>And hide secrets beneath my waves.",
+                answer: "ocean"
+            },
+            {
+                question: "Born from light,<br>I follow you everywhere.<br>But only in brightness — I vanish in dark.",
+                answer: "shadow"
+            },
+            {
+                question: "I change colors with time,<br>Whisper goodbye before I fall,<br>But return with new life every year.",
+                answer: "leaf"
+            },
+            {
+                question: "I carry the forest's breath,<br>Climb mountains with no legs,<br>And make even silence sing.",
+                answer: "breeze"
+            },
+            {
+                question: "I watch the world from afar,<br>Take different shapes every night,<br>And still, I never leave.",
+                answer: "moon"
+            },
+            {
+                question: "I have no heart, yet I bloom,<br>No blood, yet I grow,<br>No voice, yet I speak in colors.",
+                answer: "flower"
+            },
+            {
+                question: "I don't move, yet I shape everything.<br>I hold roots, I bury treasures,<br>And I am older than time.",
+                answer: "earth"
+            },
+            {
+                question: "I rise with fire but never burn,<br>I start each day and then return,<br>Without me, flowers lose their glow,<br>Guess my name — I rise and go.",
+                answer: "sun"
+            },
+            {
+                question: "I fall but never make a sound,<br>I touch your face, then kiss the ground,<br>No shape I keep, no form I hold,<br>Yet farmers wait for me like gold.",
+                answer: "rain"
+            },
+            {
+                question: "Green I grow without a voice,<br>Cows and sheep find me their choice,<br>I cover fields from hill to flat,<br>Soft and low — what plant is that?",
+                answer: "grass"
+            },
+            {
+                question: "I have no wings but I still fly,<br>I brush your cheek and pass you by,<br>I make the trees begin to dance,<br>Yet never show myself at glance.",
+                answer: "wind"
+            },
+            {
+                question: "I sleep all day and wake at night,<br>My silver face reflects the light,<br>I pull the tides without a sound,<br>Above the earth, I move around.",
+                answer: "moon"
+            },
+            {
+                question: "I shine in dark with tiny eyes,<br>I fill the black and empty skies,<br>Though far away, I seem so near,<br>And every child holds me dear.",
+                answer: "stars"
+            },
+            {
+                question: "My body's soft, my steps are light,<br>I wear white shoes and fall at night,<br>I melt away with morning's touch,<br>But in the dark, I chill so much.",
+                answer: "snow"
+            },
+            {
+                question: "I bloom in silence, soft and bright,<br>With colors bold and scent so light,<br>I do not walk, I do not cry,<br>But I still make the heart sigh.",
+                answer: "flower"
+            },
+            {
+                question: "I whisper loud in sky so high,<br>I shout with clouds that pass you by,<br>I strike with flash, I shake the land,<br>Yet disappear with no command.",
+                answer: "thunder"
+            },
+            {
+                question: "I do not bleed, yet I am red,<br>I fall from trees and make their bed,<br>I crunch beneath your boot in fall,<br>And disappear when winter calls.",
+                answer: "leaf"
+            },
+            {
+                question: "I never walk but run with grace,<br>I shape the land, I carve its face,<br>From mountains high to oceans wide,<br>I move along with moon as guide.",
+                answer: "river"
+            },
+            {
+                question: "I stand in groups, both tall and proud,<br>With leafy arms and heads unbowed,<br>I give the air, I guard the soil,<br>And still I grow without much toil.",
+                answer: "tree"
+            },
+            {
+                question: "I'm hot inside but hard outside,<br>I sleep for years, then open wide,<br>I breathe out fire, I paint the sky,<br>And no one asks the reason why.",
+                answer: "volcano"
+            },
+            {
+                question: "I roam the land in golden skin,<br>With winds so hot they burn within,<br>I hide the life beneath my sand,<br>A thirsty, silent, endless land.",
+                answer: "desert"
+            },
+            {
+                question: "I live in woods and fly with ease,<br>I sing my songs from branch to breeze,<br>Though small in size, my heart is free,<br>Who might I be? Just look in trees.",
+                answer: "bird"
+            },
+            {
+                question: "I'm loud and dark, I bring the rain,<br>I carry clouds that cry in pain,<br>But after me, the skies turn blue,<br>With rainbows shining just for you.",
+                answer: "storm"
+            },
+            {
+                question: "I walk with light but make no sound,<br>I stretch and move along the ground,<br>When sun is high, I shrink and hide,<br>But come back tall by evening tide.",
+                answer: "shadow"
+            },
+            {
+                question: "My roots are deep, my hands are stone,<br>I stand where birds and winds have flown,<br>I watch the stars and feel the snow,<br>I never move, yet still I grow.",
+                answer: "mountain"
+            },
+            {
+                question: "I spread so wide, yet weigh so less,<br>I hold the clouds in soft caress,<br>The birds, the planes — they pass through me,<br>I am the roof you cannot see.",
+                answer: "sky"
+            },
+            {
+                question: "I'm salty, deep, and full of life,<br>I roar in peace, I rage in strife,<br>I touch the shores and kiss the sand,<br>Forever moving, never planned.",
+                answer: "ocean"
+            }
+        ];
+        
+        // Elements
+        const welcomeScreen = document.querySelector('.welcome-screen');
+        const welcomeRiddleQuestion = document.getElementById('welcome-riddle-question');
+        const welcomeRiddleInput = document.getElementById('welcome-riddle-input');
+        const welcomeRiddleSubmit = document.getElementById('welcome-riddle-submit');
+        const welcomeRiddleError = document.getElementById('welcome-riddle-error');
+        
+        const passwordModal = document.querySelector('.password-modal');
+        const letterPassword = document.getElementById('letter-password');
+        const passwordSubmit = document.getElementById('password-submit');
+        const passwordError = document.getElementById('password-error');
+        const closeModal = document.querySelector('.close-modal');
+        
+        const mainContainer = document.querySelector('.main-container');
+        const woodenFrame = document.querySelector('.wooden-frame');
+        const readBtn = document.querySelector('.read-letter-btn');
+        const envelope = document.querySelector('.envelope');
+        const letterPaper = document.querySelector('.letter-paper');
+        
+        const correctPassword = "maharani"; // Password is case-insensitive
+        let currentRiddle;
+        let isLetterOpen = false;
+        
+        // Show welcome screen with random riddle when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            // Get a random riddle for the welcome screen
+            currentRiddle = getRandomRiddle();
+            welcomeRiddleQuestion.innerHTML = currentRiddle.question;
+            welcomeRiddleInput.focus();
+        });
+        
+        // Get a random riddle
+        function getRandomRiddle() {
+            const randomIndex = Math.floor(Math.random() * riddles.length);
+            return riddles[randomIndex];
+        }
+        
+        // Check welcome screen riddle answer
+        welcomeRiddleSubmit.addEventListener('click', checkWelcomeRiddle);
+        welcomeRiddleInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkWelcomeRiddle();
+            }
+        });
+        
+        function checkWelcomeRiddle() {
+            const userAnswer = welcomeRiddleInput.value.trim().toLowerCase();
+            
+            if (userAnswer === currentRiddle.answer.toLowerCase()) {
+                // Hide welcome screen and show envelope
+                welcomeScreen.classList.add('hidden');
+                
+                // Show envelope with flip animation
+                setTimeout(function() {
+                    envelope.style.transform = 'rotateY(180deg)';
+                    readBtn.textContent = "Read the letter";
+                }, 500);
+            } else {
+                welcomeRiddleError.style.display = 'block';
+                welcomeRiddleInput.value = '';
+                welcomeRiddleInput.focus();
+            }
+        }
+        
+        // "Read the letter" button clicked
+        readBtn.addEventListener('click', function() {
+            if (!isLetterOpen) {
+                // Show password modal
+                passwordModal.style.display = 'flex';
+                letterPassword.value = '';
+                passwordError.style.display = 'none';
+                letterPassword.focus();
+            } else {
+                // Close the letter
+                woodenFrame.classList.remove('full-screen');
+                letterPaper.classList.remove('visible');
+                
+                // Reset envelope and button
+                setTimeout(() => {
+                    readBtn.textContent = 'Read the letter';
+                    isLetterOpen = false;
+                }, 800);
+            }
+        });
+        
+        // Password modal events
+        passwordSubmit.addEventListener('click', checkPassword);
+        letterPassword.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        closeModal.addEventListener('click', function() {
+            passwordModal.style.display = 'none';
+        });
+        
+        function checkPassword() {
+            const userPassword = letterPassword.value.trim().toLowerCase();
+            
+            if (userPassword === correctPassword) {
+                // Hide password modal
+                passwordModal.style.display = 'none';
+                
+                // Show letter in full screen
+                woodenFrame.classList.add('full-screen');
+                
+                setTimeout(function() {
+                    letterPaper.classList.add('visible');
+                    letterPaper.style.animation = 'fadeIn 0.8s ease-out forwards';
+                    readBtn.textContent = 'Close letter';
+                    isLetterOpen = true;
+                }, 500);
+            } else {
+                passwordError.style.display = 'block';
+                letterPassword.value = '';
+                letterPassword.focus();
+            }
+        }
+    </script>
+</body>
+</html>
