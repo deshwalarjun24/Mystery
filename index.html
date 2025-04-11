@@ -38,7 +38,7 @@
             justify-content: center;
             width: 100vw;
             height: 100vh;
-            background-color: #3c2a1c;
+            background-image: url('Bg.jpg');
             position: fixed;
             top: 0;
             left: 0;
@@ -48,6 +48,8 @@
             background-position: center;
             background-repeat: no-repeat;
             overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.5);
+            background-blend-mode: overlay;
         }
 
         .welcome-screen.hidden {
@@ -367,7 +369,7 @@
         .envelope {
             width: 300px;
             height: 200px;
-            background-image: url('Evelope.PNG');
+            background-image: url('Evelope.png');
             background-size: cover;
             background-position: center;
             border-radius: 5px;
@@ -384,7 +386,7 @@
             height: 200px;
             border-radius: 5px;
             z-index: 9;
-            background-image: url('Evelope.PNG');
+            background-image: url('Evelope.png');
             background-size: cover;
             background-position: center;
             border: 1px solid #a67c52;
@@ -429,7 +431,7 @@
         .letter-paper {
             width: 350px;
             height: 250px;
-            background-image: url('Page.jpg');
+            background-image: url('page.png');
             background-size: cover;
             background-position: center;
             margin-top: 20px;
@@ -477,6 +479,32 @@
             padding: 30px;
             max-width: 700px;
             margin: 0 auto;
+        }
+
+        /* Add additional styling for larger screens */
+        @media (min-width: 1200px) {
+            .wooden-frame.full-screen .letter-content {
+                font-size: 24px;
+                line-height: 1.8;
+                max-width: 800px;
+            }
+            
+            .letter-content .poem-title {
+                font-size: 150%;
+                margin-bottom: 30px;
+            }
+            
+            .letter-content .poem-body {
+                max-width: 700px;
+            }
+        }
+
+        /* Add styling for extra large screens */
+        @media (min-width: 1600px) {
+            .wooden-frame.full-screen .letter-content {
+                font-size: 26px;
+                max-width: 900px;
+            }
         }
 
         .letter-content p {
@@ -900,6 +928,102 @@
             {
                 question: "I'm salty, deep, and full of life,<br>I roar in peace, I rage in strife,<br>I touch the shores and kiss the sand,<br>Forever moving, never planned.",
                 answer: "ocean"
+            },
+            {
+                question: "I'm not alive, yet I can grow,<br>I build the hills and valleys low,<br>My skin is rough, my core is tight,<br>Found in caves and cliffs in sight.",
+                answer: "rock"
+            },
+            {
+                question: "I twirl and twist, a funnel gray,<br>I lift the earth and skies away,<br>I dance with speed, a spinning scream,<br>Destroying all like a bad dream.",
+                answer: "tornado"
+            },
+            {
+                question: "I drift in sky, both white and black,<br>I block the sun, then give it back,<br>I carry storms or hide the moon,<br>And sometimes burst in monsoon.",
+                answer: "cloud"
+            },
+            {
+                question: "I wear a gown of feathers neat,<br>I sing my song with rhythm sweet,<br>I greet the dawn with notes so high,<br>Then soar with freedom in the sky.",
+                answer: "bird"
+            },
+            {
+                question: "I crawl on land, I swim with ease,<br>My shell's my shield in land or seas,<br>So slow I move, yet long I live,<br>Guess who I am — just take and give.",
+                answer: "turtle"
+            },
+            {
+                question: "I'm made of gas, you cannot see,<br>But without me, no breath can be,<br>I hold your voice, I carry sound,<br>I fill the space that's all around.",
+                answer: "air"
+            },
+            {
+                question: "I shake the ground and split the earth,<br>I bring both fear and sudden birth,<br>I twist the land, the seas may rise,<br>With mighty roar beneath the skies.",
+                answer: "earthquake"
+            },
+            {
+                question: "I flicker bright then disappear,<br>I strike so fast and loud and clear,<br>I flash in skies, I split the tree,<br>What force of nature might I be?",
+                answer: "lightning"
+            },
+            {
+                question: "I guard the woods, I howl at night,<br>With eyes that glow and silent bite,<br>I roam in packs, both swift and sly,<br>My name's a whisper in the sky.",
+                answer: "wolf"
+            },
+            {
+                question: "I hum at night, I dance in flames,<br>I flick and jump with playful games,<br>But touch me once and feel my bite,<br>I bring both danger and delight.",
+                answer: "fire"
+            },
+            {
+                question: "I run but never take a step,<br>I roar but never have a breath,<br>From cliffs I fall and lakes I make,<br>I'm nature's path that none can fake.",
+                answer: "waterfall"
+            },
+            {
+                question: "I freeze the world with icy kiss,<br>I paint the trees in morning mist,<br>No sound I make, yet all feel me,<br>I rule the land where snow runs free.",
+                answer: "frost"
+            },
+            {
+                question: "I rise in coils, both dark and tall,<br>I warn of danger, death, and fall,<br>From burning heart I'm born in black,<br>A sky-bound snake that won't turn back.",
+                answer: "smoke"
+            },
+            {
+                question: "I stretch for miles with golden face,<br>I shift and move with silent grace,<br>No forest here, just dunes and heat,<br>Where sun and sky and silence meet.",
+                answer: "desert"
+            },
+            {
+                question: "I'm soft and round, I rest in lakes,<br>I leap and fall with flowing wakes,<br>My croaks may echo in the night,<br>But I am green with jumping might.",
+                answer: "frog"
+            },
+            {
+                question: "I'm full of rings yet wear no jewels,<br>I tell my age with annual rules,<br>My arms reach high, my roots dig low,<br>While seasons pass, I simply grow.",
+                answer: "tree"
+            },
+            {
+                question: "I'm born in dark and thrive in wet,<br>A living mass you've never met,<br>I break down life to make anew,<br>In forest floors, I help things grew.",
+                answer: "fungus"
+            },
+            {
+                question: "I glide with grace though have no wings,<br>Through reefs and depths where current sings,<br>With stripes of light upon my back,<br>I hunt with stealth on ocean track.",
+                answer: "shark"
+            },
+            {
+                question: "I sleep by day, hunt by night,<br>With silent wings and perfect sight,<br>My face turns full to see all sound,<br>The forest's ghost that's rarely found.",
+                answer: "owl"
+            },
+            {
+                question: "I flow in webs yet never speak,<br>I power life from peak to creek,<br>I'm crystal clear or muddy brown,<br>The liquid gold the earth holds down.",
+                answer: "water"
+            },
+            {
+                question: "I'm black as night but burn with light,<br>I warm the earth with radiant might,<br>From sky I fell in times long past,<br>A stone of fire that travels fast.",
+                answer: "meteor"
+            },
+            {
+                question: "I wake the world with golden touch,<br>I bring the warmth that means so much,<br>I'm first to greet you every day,<br>A gentle start that leads the way.",
+                answer: "sunrise"
+            },
+            {
+                question: "I decorate the heavens high,<br>A painted arch across the sky,<br>Born when sun and rain combine,<br>My colors seven, all divine.",
+                answer: "rainbow"
+            },
+            {
+                question: "I'm crowned with ice, yet boil inside,<br>Where fire and snow together hide,<br>I sleep for years then wake with roar,<br>A mountain's heart that's at earth's core.",
+                answer: "volcano"
             }
         ];
         
@@ -927,37 +1051,28 @@
         let isLetterOpen = false;
         
         // Random nature background collections from Unsplash
-        const natureCollections = [
-            'https://source.unsplash.com/random/1920x1080/?nature',
-            'https://source.unsplash.com/random/1920x1080/?forest',
-            'https://source.unsplash.com/random/1920x1080/?mountains',
-            'https://source.unsplash.com/random/1920x1080/?flowers',
-            'https://source.unsplash.com/random/1920x1080/?sunset',
-            'https://source.unsplash.com/random/1920x1080/?ocean',
-            'https://source.unsplash.com/random/1920x1080/?trees',
-            'https://source.unsplash.com/random/1920x1080/?waterfall',
-            'https://source.unsplash.com/random/1920x1080/?sky',
-            'https://source.unsplash.com/random/1920x1080/?river'
-        ];
+        // Not needed anymore as we're using the fixed Bg.jpg background
+        // const natureCollections = [
+        //    'https://source.unsplash.com/random/1920x1080/?nature',
+        //    'https://source.unsplash.com/random/1920x1080/?forest',
+        //    'https://source.unsplash.com/random/1920x1080/?mountains',
+        //    'https://source.unsplash.com/random/1920x1080/?flowers',
+        //    'https://source.unsplash.com/random/1920x1080/?sunset',
+        //    'https://source.unsplash.com/random/1920x1080/?ocean',
+        //    'https://source.unsplash.com/random/1920x1080/?trees',
+        //    'https://source.unsplash.com/random/1920x1080/?waterfall',
+        //    'https://source.unsplash.com/random/1920x1080/?sky',
+        //    'https://source.unsplash.com/random/1920x1080/?river'
+        // ];
 
         // Set random nature background on load
         function setRandomBackground() {
-            const randomIndex = Math.floor(Math.random() * natureCollections.length);
-            const randomBgUrl = natureCollections[randomIndex];
+            // Use the fixed background image that's already set in CSS
+            // The welcome-screen already has background-image: url('Bg.jpg'); in the CSS
+            // We don't need to do anything here, as the CSS will handle it
+            console.log('Using the fixed background image: Bg.jpg');
             
-            // Create a new image to preload
-            const img = new Image();
-            img.src = randomBgUrl;
-            
-            // Once image is loaded, set it as background
-            img.onload = function() {
-                welcomeScreen.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${randomBgUrl}')`;
-            };
-            
-            // If image fails to load, use default background
-            img.onerror = function() {
-                console.log('Failed to load background image');
-            };
+            // No need to load Unsplash images anymore
         }
         
         // Show welcome screen with random riddle when page loads
