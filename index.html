@@ -1224,6 +1224,48 @@
             }
         });
         
+        // Random poem generator function
+        function generateRandomPoem() {
+            const poems = [
+                {
+                    title: "To My Ever-Green Queen,",
+                    stanzas: [
+                        "Some people come and go like seasons —<br>but you...<br>you feel like the shade of an old tree on a harsh summer day.<br>Still, calm, comforting.<br>Not loud — just there —<br>like the wind that doesn't need to be seen to be felt.",
+                        "You're like the first rain after a long drought.<br>You don't just fall — you soak in.<br>You don't make noise — you make sense.<br>You remind me how peace isn't found —<br>it's felt in the presence of the right one.",
+                        "I've seen flowers bloom and wither,<br>but some roots — like yours — run deep.<br>Unshaken.<br>You don't need to try to be beautiful.<br>You're like a mountain —<br>rough maybe, but full of grace.<br>Not everyone can climb,<br>but the one who does, sees the world from a whole new height.",
+                        "With you, I don't feel like a better man —<br>I feel like a real man.<br>Grounded like earth,<br>steady like the moon,<br>free like a cloud,<br>and still pulled toward you like the ocean to the moon.",
+                        "You're my MAHARANI — not of kingdoms,<br>but of my calm.<br>Of my silence.<br>Of every part of me I didn't even know needed light.",
+                        "No matter how many seasons come and go,<br>you will always be my evergreen."
+                    ]
+                },
+                {
+                    title: "My Wilderness Heart,",
+                    stanzas: [
+                        "I've wandered through forests and valleys,<br>climbed mountains and crossed rivers wide.<br>But nothing compares to the landscape<br>of emotions I feel by your side.",
+                        "Like morning mist over calm waters,<br>you appear in my thoughts each day.<br>A beauty so subtle yet striking —<br>like sunrise that chases night away.",
+                        "Your laugh is the song of wild rivers,<br>your touch like the sun's gentle heat.<br>Your wisdom deeper than oceans,<br>your patience makes my world complete.",
+                        "In storms that have rattled my branches,<br>you've been the roots keeping me sound.<br>When winter has frozen my spirit,<br>you're spring that brings life to the ground.",
+                        "You're my MAHARANI — crown of my forest,<br>queen of each valley and peak.<br>The star that I follow through darkness,<br>the strength I find when I am weak.",
+                        "Like mountains that stand through all seasons,<br>my love for you never will fade."
+                    ]
+                },
+                {
+                    title: "Nature's Finest Creation,",
+                    stanzas: [
+                        "The world creates wonders each moment —<br>starry skies and coral reefs bright.<br>But nothing it's made is quite perfect<br>as when it created your light.",
+                        "Your eyes hold the depth of still waters,<br>reflecting both sorrow and joy.<br>Your spirit's as free as an eagle,<br>yet gentle as leaves wind employs.",
+                        "I've felt summer rains on hot pavement,<br>seen frost make its art on cold glass.<br>But nothing refreshes and changes<br>like moments with you as they pass.",
+                        "In you, all the seasons find balance —<br>spring's hope and fall's colorful view.<br>Summer's warm passion for living,<br>winter's calm peace through and through.",
+                        "You're my MAHARANI — jewel of nature,<br>where earth's finest gifts all combine.<br>The rhythm of waves, breath of mountains,<br>the heart that beats perfectly with mine.",
+                        "As rivers will flow to the ocean,<br>my soul always reaches for you."
+                    ]
+                }
+            ];
+            
+            // Get a random poem
+            return poems[Math.floor(Math.random() * poems.length)];
+        }
+        
         // Password modal events
         passwordSubmit.addEventListener('click', checkPassword);
         letterPassword.addEventListener('keypress', function(e) {
@@ -1243,6 +1285,34 @@
                 // Hide password modal
                 passwordModal.style.display = 'none';
                 
+                // Generate a random poem
+                const randomPoem = generateRandomPoem();
+                
+                // Set the poem content
+                document.querySelector('.poem-title').textContent = randomPoem.title;
+                const poemBody = document.querySelector('.poem-body');
+                
+                // Clear existing stanzas
+                poemBody.innerHTML = '';
+                
+                // Add new stanzas
+                randomPoem.stanzas.forEach(stanza => {
+                    const stanzaDiv = document.createElement('div');
+                    stanzaDiv.className = 'poem-stanza';
+                    stanzaDiv.innerHTML = stanza;
+                    poemBody.appendChild(stanzaDiv);
+                });
+                
+                // Add signature
+                const signatureDiv = document.createElement('div');
+                signatureDiv.className = 'poem-signature';
+                signatureDiv.innerHTML = '— Yours <span class="heart-emoji">🤎</span>,<br>' +
+                    '<span class="signature-name">' +
+                    'In every sunset, breeze, and silent pause,<br>' +
+                    'The One Who Sees You Like Nature Itself' +
+                    '</span>';
+                poemBody.appendChild(signatureDiv);
+                
                 // Show letter in full screen
                 woodenFrame.classList.add('full-screen');
                 
@@ -1258,6 +1328,39 @@
                 letterPassword.focus();
             }
         }
+
+        // Visit counter functionality
+        function updateVisitCount() {
+            let visitCount = localStorage.getItem('visitCount');
+            if (!visitCount) {
+                visitCount = 0;
+            }
+            visitCount = parseInt(visitCount) + 1;
+            localStorage.setItem('visitCount', visitCount);
+            
+            // Display the count in console
+            console.log(`Website has been visited ${visitCount} times`);
+            
+            // You can also display it on the page if you want
+            const visitCounter = document.createElement('div');
+            visitCounter.id = 'visit-counter';
+            visitCounter.style.cssText = `
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                background: rgba(255, 255, 255, 0.8);
+                padding: 5px 10px;
+                border-radius: 15px;
+                font-size: 12px;
+                color: #333;
+                z-index: 1000;
+            `;
+            visitCounter.textContent = `Visits: ${visitCount}`;
+            document.body.appendChild(visitCounter);
+        }
+
+        // Call the function when the page loads
+        window.addEventListener('load', updateVisitCount);
     </script>
 </body>
 </html>
